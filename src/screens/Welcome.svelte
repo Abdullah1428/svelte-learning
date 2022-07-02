@@ -1,3 +1,26 @@
+<script>
+    import {createEventDispatcher} from 'svelte';
+
+    const dispatch = createEventDispatcher(); // there is an alternative to this - passing hanlder from parent
+
+    let selected = false;
+
+    const select = (category) => {
+        selected = true;
+        dispatch('select', {category}) // the app component is going to listen to this dispatch event
+    }
+
+    const categories = [
+        { slug: 'actors', label: 'Actors'},
+        { slug: 'athletes', label: 'Athletes'},
+        { slug: 'comedians', label: 'Comedians'},
+        { slug: 'creators', label: 'Creators'},
+        { slug: 'models', label: 'Models'},
+        { slug: 'musicians', label: 'Musicians'},
+        { slug: 'reality-tv', label: 'Reality TV'},
+    ];
+</script>
+
 <header>
     <h1>
         CameoP<span class="logo">a</span>rison
@@ -11,6 +34,16 @@
         But who commands the highest price?
     </p>
 </header>
+
+<p>
+    Pick a category to play the game:
+</p>
+
+<div class="categories">
+    {#each categories as category}
+        <button disabled={selected} on:click={() => select(category)}>{category.label}</button>
+    {/each}
+</div>
 
 <style>
     h1 {
