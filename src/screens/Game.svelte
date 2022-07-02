@@ -83,7 +83,7 @@
     }
 
     .same {
-      height: 5em;
+      height: 8em;
     }
   }
 </style>
