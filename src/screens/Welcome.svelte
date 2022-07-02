@@ -7,7 +7,7 @@
 
     const select = (category) => {
         selected = true;
-        dispatch('select', {category}) // the app component is going to listen to this dispatch event
+        dispatch('select', {category}); // the app component is going to listen to this dispatch event
     }
 
     const categories = [
