@@ -1,7 +1,7 @@
 <script>
   import { createEventDispatcher } from 'svelte';
   import Card from '../components/Card.svelte';
-  import { pick_random, sleep } from '../utils.js';
+  import { pick_random, sleep, load_image } from '../utils.js';
 
   // making the selection prop available that is passed from App.svelte
   export let selection;
@@ -10,8 +10,10 @@
 
   const load_details = async (celeb) => {
     const res = await fetch(`https://cameo-explorer.netlify.app/celebs/${celeb.id}.json`);
+    const details = await res.json();
+    await load_image(details.image);
 
-    return await res.json();
+    return details;
   } 
 
   const promises = selection.map(round => Promise.all([
