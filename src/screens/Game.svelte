@@ -16,6 +16,8 @@
     load_details(round.b)
   ]));
 
+  const results = Array(selection.length);
+
   let i = 0;
   let last_result
 
@@ -27,7 +29,8 @@
     // wait for 1500ms
     await sleep(1500);
 
-    // clear out last_result
+    // assign to results and clear out last_result
+    results[i] = last_result 
     last_result = null;
 
     if (i < selection.length - 1) {
@@ -38,12 +41,14 @@
   }
 </script>
 
+<!--header-->
 <header>
   <p>
     Tap on the more monetisable celebrity's face, or tap 'same price' if society values them equally.
   </p>
 </header>
 
+<!--game container-->
 <div class="game-container">
   {#await promises[i] then [a,b]}
     <div class="game">
@@ -73,6 +78,7 @@
   {/await}
 </div>
 
+<!--showing the result as giant right or wrong icon-->
 {#if last_result}
   <img 
     class="giant-result"
@@ -81,8 +87,18 @@
   />
 {/if}
 
-<div class="results">
-  <p>results will go here...</p>
+<!--showing the results row-->
+<div class="results" style="grid-template-columns: repeat({results.length}, 1fr)">
+  {#each results as result}
+    <span class="result">
+      {#if result}
+        <img 
+          alt="{result} answer"
+          src="/icons/{result}.svg"
+        />
+      {/if}
+    </span>  
+  {/each}
 </div>
 
 <style>
@@ -115,6 +131,30 @@
     left: calc(50vw - 25vmin);
     top: calc(50vh - 25vmin);
     opacity: 0.5;
+  }
+
+  .results {
+    display: grid;
+    grid-gap: 0.2em;
+    width: 100%;
+    max-width: 320px;
+    margin: 1em auto 0 auto;
+  }
+
+  .result {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    padding: 0 0 100% 0;
+    transition: background 0.2s;
+    transition-delay: 0.2s;
+  }
+
+  .result img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
   }
 
   @media (min-width: 640px) {
