@@ -1,10 +1,8 @@
 <script>
-	import { onMount } from 'svelte'
-	import Welcome from './screens/Welcome.svelte'
-	import Game from './screens/Game.svelte'
-	import { select } from './select'
-
-	// https://cameoparison.netlify.app/
+	import { onMount } from 'svelte';
+	import Welcome from './screens/Welcome.svelte';
+	import Game from './screens/Game.svelte';
+	import { select } from './select';
 
 	let celebs_promise;
 
