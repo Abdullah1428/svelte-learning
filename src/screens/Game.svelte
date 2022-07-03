@@ -1,5 +1,7 @@
 <script>
   import { createEventDispatcher } from 'svelte';
+  import { fly, crossfade } from 'svelte/transition';
+  import * as eases from 'svelte/easing';
   import Card from '../components/Card.svelte';
   import { pick_random, sleep, load_image } from '../utils.js';
 
@@ -7,6 +9,11 @@
   export let selection;
 
   const dispatch = createEventDispatcher();
+
+  const [send, receive] = crossfade({
+    easing: eases.cubicOut,
+    duration: 300
+  });
 
   const load_details = async (celeb) => {
     const res = await fetch(`https://cameo-explorer.netlify.app/celebs/${celeb.id}.json`);
@@ -26,6 +33,7 @@
   let i = 0;
   let last_result;
   let done = false;
+  let ready = true;
 
   // for score doing a reactive declaration
   $: score = results.filter(x => x === 'right').length;
@@ -51,6 +59,8 @@
     results[i] = last_result 
     last_result = null;
 
+    await sleep(500);
+
     if (i < selection.length - 1) {
       i += 1;
     } else {
@@ -74,9 +84,15 @@
       <p>{pick_message(score / results.length)}</p>
       <button on:click={() => dispatch('restart')}>Back to Main Screen</button>
     </div>
-  {:else}
+  {:else if ready}
     {#await promises[i] then [a,b]}
-      <div class="game">
+      <div 
+        class="game"
+        in:fly={{duration: 200, y: 20}}
+        out:fly={{duration: 200, y: -20}}
+        on:outrostart={() => ready  = false}
+        on:outroend={() => ready  = true}
+      >
         <div class="card-container">
           <Card 
             celeb={a} 
@@ -112,6 +128,8 @@
 <!--showing the result as giant right or wrong icon-->
 {#if last_result}
   <img 
+    in:fly={{x: 100, duration: 200}}
+    out:send={{key: i}}
     class="giant-result"
     alt="{last_result} answer"
     src="/icons/{last_result}.svg"
@@ -120,10 +138,11 @@
 
 <!--showing the results row-->
 <div class="results" style="grid-template-columns: repeat({results.length}, 1fr)">
-  {#each results as result}
+  {#each results as result, i}
     <span class="result">
       {#if result}
         <img 
+          in:receive={{key: i}}
           alt="{result} answer"
           src="/icons/{result}.svg"
         />

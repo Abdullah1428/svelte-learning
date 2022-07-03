@@ -2,7 +2,8 @@
 	import { onMount } from 'svelte';
 	import Welcome from './screens/Welcome.svelte';
 	import Game from './screens/Game.svelte';
-	import { select } from './select';
+	import { select } from './select.js';
+	import { load_image } from './utils';
 
 	let celebs_promise;
 
@@ -43,6 +44,10 @@
 
 	onMount(() => {
 		celebs_promise = load_celebs();
+
+		// load the icons so we dont have the flickering
+		load_image('/icons/right.svg');
+		load_image('/icons/wrong.svg');
 	});
 </script>
 
