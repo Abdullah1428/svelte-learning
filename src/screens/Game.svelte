@@ -1,6 +1,6 @@
 <script>
   import { createEventDispatcher } from 'svelte';
-  import { fly, crossfade } from 'svelte/transition';
+  import { fly, scale, crossfade } from 'svelte/transition';
   import * as eases from 'svelte/easing';
   import Card from '../components/Card.svelte';
   import { pick_random, sleep, load_image } from '../utils.js';
@@ -79,7 +79,10 @@
 <!--game container-->
 <div class="game-container">
   {#if done}
-    <div class="done">
+    <div 
+      class="done" 
+      in:scale={{delay:200, duration:800, easing: eases.elasticOut}}
+    >
       <strong>{score}/{results.length}</strong>
       <p>{pick_message(score / results.length)}</p>
       <button on:click={() => dispatch('restart')}>Back to Main Screen</button>
@@ -101,7 +104,7 @@
             winner={a.price >= b.price}
           />
         </div>
-        <div>
+        <div class="same_price">
           <button 
             class="same"
             on:click={() => submit(a, b, 0)}
@@ -224,6 +227,10 @@
     font-weight: 700;
   }
 
+  .same_price {
+      justify-content: center;
+  }
+
   @media (min-width: 640px) {
     .game {
       max-width: 100%;
@@ -234,6 +241,9 @@
       max-height: calc(100vh - 6em);
     }
 
+    .same_price {
+      justify-content: center;
+    }
     .same {
       height: 8em;
     }

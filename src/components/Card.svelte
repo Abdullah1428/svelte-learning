@@ -1,5 +1,7 @@
 <script>
   import { createEventDispatcher } from 'svelte';
+  import { scale } from 'svelte/transition';
+  import { elasticOut } from 'svelte/easing';
   
   export let celeb;
   export let showprice;
@@ -24,7 +26,7 @@
 
     {#if showprice}
       <div class="price" class:large={winner}>
-        <span>${celeb.price}</span>
+        <span in:scale={{easing:elasticOut, duration:600}}>${celeb.price}</span>
       </div>
     {/if}
 
@@ -49,6 +51,8 @@
     overflow: hidden;
     padding: 0;
     text-align: center;
+    border-radius: var(--border-radius);
+    box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.2);
   }
 
   .details {
