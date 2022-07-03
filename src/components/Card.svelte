@@ -2,6 +2,8 @@
   import { createEventDispatcher } from 'svelte';
   
   export let celeb;
+  export let showprice;
+  export let winner;
 
   const dispatch = createEventDispatcher();
   
@@ -19,6 +21,13 @@
       </h2> 
       <p class="type">{celeb.type}</p>
     </div>
+
+    {#if showprice}
+      <div class="price" class:large={winner}>
+        <span>${celeb.price}</span>
+      </div>
+    {/if}
+
   </button>
 </div>
 
@@ -62,6 +71,24 @@
     text-overflow: ellipsis;
   }
 
+  .price {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    background-color: rgb(0, 0, 0, 0.3);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 4em;
+    font-weight: 700;
+  }
+
+  .price.large {
+    font-size: 6em;
+  }
   @media (min-width: 640px) {
     .card-outer {
       height: 0;
