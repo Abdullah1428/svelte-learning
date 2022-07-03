@@ -1,5 +1,5 @@
 <script>
-    import {createEventDispatcher} from 'svelte';
+    import { createEventDispatcher } from 'svelte';
 
     const dispatch = createEventDispatcher(); // there is an alternative to this - passing hanlder from parent
 
@@ -7,7 +7,7 @@
 
     const select = (category) => {
         selected = true;
-        dispatch('select', {category}); // the app component is going to listen to this dispatch event
+        dispatch('select', { category }); // the app component is going to listen to this dispatch event
     }
 
     const categories = [

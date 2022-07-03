@@ -4,6 +4,8 @@
 	import Game from './screens/Game.svelte'
 	import { select } from './select'
 
+	// https://cameoparison.netlify.app/
+
 	let celebs_promise;
 
 	let state = 'welcome'; // or 'playing'
